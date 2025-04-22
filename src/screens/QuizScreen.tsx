@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../context/QuizContext";
 import { Question } from "../types/quiz";
 import { questions } from "../data/questions";
@@ -12,27 +11,24 @@ interface FormData {
 
 const QuizScreen: React.FC = () => {
   const { state, dispatch } = useContext(QuizContext);
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>();
+  const { handleSubmit, reset, setValue, watch, getValues } =
+    useForm<FormData>();
 
   const currentQuestion: Question = questions[state.currentQuestionIndex];
   const progress = ((state.currentQuestionIndex + 1) / questions.length) * 100;
   const isLastQuestion = state.currentQuestionIndex === questions.length - 1;
 
-  const onSubmit = (data: FormData) => {
-    const selectedOptionId = parseInt(data.answer, 10);
+  const onSubmit = () => {
+    const selectedAnswer = getValues("answer");
+
+    if (!selectedAnswer) return;
+
+    const selectedOptionId = parseInt(selectedAnswer);
     const selectedOption = currentQuestion.options.find(
       (option) => option.id === selectedOptionId
     );
 
     if (!selectedOption) return;
-
-    const currentIndex = state.currentQuestionIndex;
 
     dispatch({
       type: "ANSWER_QUESTION",
@@ -45,13 +41,13 @@ const QuizScreen: React.FC = () => {
 
     if (isLastQuestion) {
       dispatch({ type: "COMPLETE_QUIZ" });
-      navigate("/results");
     } else {
-      const nextIndex = currentIndex + 1;
-      navigate(`/quiz/${nextIndex + 1}`); // +1 perché l'URL parte da 1
+      dispatch({ type: "NEXT_QUESTION" });
       reset();
     }
   };
+
+  const selectedAnswer = watch("answer");
 
   return (
     <div className="quiz-screen">
@@ -65,21 +61,21 @@ const QuizScreen: React.FC = () => {
         <h2 className="question-text">{currentQuestion.text}</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="options-form">
-          {currentQuestion.options.map((option) => (
-            <div key={option.id} className="option-item">
-              <input
-                type="radio"
-                id={`option-${option.id}`}
-                value={option.id}
-                {...register("answer", { required: true })}
-              />
-              <label htmlFor={`option-${option.id}`} className="option-label">
-                {option.text}
-              </label>
-            </div>
-          ))}
+          <div className="options-grid">
+            {currentQuestion.options.map((option) => (
+              <div key={option.id} className="option-item">
+                <button
+                  type="button"
+                  className={`option-button ${watch("answer") === String(option.id) ? "selected" : ""}`}
+                  onClick={() => setValue("answer", String(option.id))}
+                >
+                  {option.text}
+                </button>
+              </div>
+            ))}
+          </div>
 
-          {errors.answer && (
+          {!selectedAnswer && (
             <p className="error-message">Seleziona una risposta!</p>
           )}
 

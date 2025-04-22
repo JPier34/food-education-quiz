@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../../context/QuizContext";
-// import "./IntroScreen.css";
+import "./IntroScreen.css";
 
 const IntroScreen: React.FC = () => {
   const { dispatch } = useContext(QuizContext);

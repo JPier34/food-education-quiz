@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { QuizContext } from "../../context/QuizContext";
 import { Question } from "../../types/quiz";
@@ -12,17 +12,28 @@ interface FormData {
 const QuizScreen: React.FC = () => {
   const { state, dispatch } = useContext(QuizContext);
   const {
-    register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     reset,
+    setValue,
+    watch,
   } = useForm<FormData>();
+
+  // Stato per gestire l'errore di selezione
+  const [showError, setShowError] = useState(false);
 
   const currentQuestion: Question = questions[state.currentQuestionIndex];
   const progress = ((state.currentQuestionIndex + 1) / questions.length) * 100;
   const isLastQuestion = state.currentQuestionIndex === questions.length - 1;
 
   const onSubmit = (data: FormData) => {
+    if (!data.answer) {
+      setShowError(true); // Mostra errore se non è stata selezionata nessuna risposta
+      return;
+    }
+
+    setShowError(false); // Nascondi errore se la risposta è stata selezionata
+
     const selectedOptionId = parseInt(data.answer);
     const selectedOption = currentQuestion.options.find(
       (option) => option.id === selectedOptionId
@@ -67,19 +78,17 @@ const QuizScreen: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="options-form">
           {currentQuestion.options.map((option) => (
             <div key={option.id} className="option-item">
-              <input
-                type="radio"
-                id={`option-${option.id}`}
-                value={option.id}
-                {...register("answer", { required: true })}
-              />
-              <label htmlFor={`option-${option.id}`} className="option-label">
+              <button
+                type="button"
+                className={`option-button ${watch("answer") === String(option.id) ? "selected" : ""}`}
+                onClick={() => setValue("answer", String(option.id))}
+              >
                 {option.text}
-              </label>
+              </button>
             </div>
           ))}
 
-          {errors.answer && (
+          {showError && (
             <p className="error-message">Seleziona una risposta!</p>
           )}
 

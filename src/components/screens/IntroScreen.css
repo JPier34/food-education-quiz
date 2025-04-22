@@ -1,0 +1,77 @@
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-content {
+  animation: fadeSlideIn 0.8s ease-out;
+}
+
+.intro-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeSlideIn 0.8s ease-out;
+}
+
+.intro-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2em 3em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.intro-content h1 {
+  font-size: 2em;
+  margin-bottom: 1em;
+  color: #00796b;
+  text-align: center;
+}
+
+.intro-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.intro-description p {
+  margin-bottom: 1em;
+}
+
+.intro-description ul {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.intro-description li {
+  margin-bottom: 0.5em;
+}
+
+.start-button {
+  display: block;
+  margin: 2em auto 0;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 0.75em 1.5em;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #004d40;
+}

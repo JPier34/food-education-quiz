@@ -1,8 +1,26 @@
 #root {
-  max-width: 1280px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeSlideIn 0.8s ease-out;
+}
+
+.question-text {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  color: #00796b;
+  text-align: center;
+}
+
+/* Utility class for consistent spacing */
+.spacing-bottom {
+  margin-bottom: 1em;
 }
 
 .logo {
@@ -41,15 +59,70 @@
   color: #888;
 }
 
-.quiz-screen {
-  display: grid;
-  grid-template-areas:
-    "progress-container progress-container"
-    "option-item option-item"
-    "option-item option-item";
-    "button"
+.progress-container {
+  display: flex;
 }
 
+.question-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+}
+.question-counter.spacing-bottom {
+  @apply .spacing-bottom;
+}
 
+.options-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+  width: 100%;
+  max-width: 600px;
+}
 
+.option-item {
+  display: flex;
+  justify-content: center;
+}
+
+.option-button {
+  width: 100%;
+  padding: 1em;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: #333;
+}
+
+.option-button:hover {
+  background-color: #f0f0f0;
+}
+
+.option-button.selected {
+  background-color: #4caf50;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  font-size: 1.1em;
+  margin-top: 0.5em;
+}
+
+.next-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1em;
+  width: 100%;
+}
