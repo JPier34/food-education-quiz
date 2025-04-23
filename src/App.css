@@ -68,6 +68,7 @@
   justify-content: center;
   align-items: center;
   font-size: 1em;
+  color: #00796b;
 }
 .question-counter.spacing-bottom {
   @apply .spacing-bottom;
@@ -113,16 +114,103 @@
   color: white;
 }
 
-.error-message {
-  color: red;
-  font-size: 1.1em;
-  margin-top: 0.5em;
-}
-
 .next-button {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 1em;
   width: 100%;
+}
+
+/* Styles for error container */
+.error-container {
+  display: none; /* Initially hidden */
+  background-color: red;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  transition: opacity 0.3s ease;
+}
+
+/* When error is triggered, show the container */
+.error-container.show-error {
+  display: block;
+  opacity: 1;
+  animation: shake 0.5s ease; /* Optional: add a shake animation */
+}
+
+/* Optional: Shake animation */
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.result-container h1 {
+  margin-bottom: 1em;
+  color: #00796b;
+}
+
+.skill-level {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  color: #00796b;
+}
+
+.score-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  color: #00796b;
+  margin-bottom: 1em;
+}
+
+.result-container p {
+  font-size: 1.2em;
+  color: #555;
+  margin-bottom: 1em;
+}
+
+.result-message {
+  font-size: 1.2em;
+  color: #00796b;
+  margin-bottom: 1em;
+}
+
+.result-message span {
+  font-weight: bold;
+  color: #00796b;
+}
+
+.result-message a {
+  color: #00796b;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }

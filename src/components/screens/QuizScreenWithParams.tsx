@@ -1,13 +1,17 @@
 import React, { useEffect, useContext } from "react";
 import { useParams, useLocation, Navigate } from "react-router-dom";
-import { QuizContext } from "../context/QuizContext";
+import { QuizContext } from "../../context/QuizContext";
 import QuizScreen from "./QuizScreen";
-import { questions } from "../data/questions";
+import { questions } from "../../data/questions";
 
 const QuizScreenWithParams: React.FC = () => {
   const { questionId } = useParams();
   const location = useLocation();
-  const { state, dispatch } = useContext(QuizContext);
+  const quizContext = useContext(QuizContext);
+  if (!quizContext) {
+    throw new Error("QuizContext.Provider is missing.");
+  }
+  const { state, dispatch } = quizContext;
 
   const questionIndex = questionId ? parseInt(questionId, 10) - 1 : 0;
 
@@ -26,7 +30,7 @@ const QuizScreenWithParams: React.FC = () => {
     return <Navigate to="/quiz/1" />;
   }
 
-  return <QuizScreen />;
+  return <QuizScreen questionIndex={questionIndex} />;
 };
 
 export default QuizScreenWithParams;

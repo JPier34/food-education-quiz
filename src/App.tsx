@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useReducer } from "react";
 import {
   BrowserRouter as Router,
@@ -10,7 +9,7 @@ import IntroScreen from "./components/screens/IntroScreen";
 import ResultScreen from "./components/screens/ResultScreen";
 import { QuizContext, quizReducer, initialState } from "./context/QuizContext";
 import "./App.css";
-import QuizScreenWithParams from "./screens/QuizScreenWithParams";
+import QuizScreenWithParams from "./components/screens/QuizScreenWithParams";
 
 // Wrapper per IntroScreen
 const IntroScreenWrapper: React.FC = () => {
