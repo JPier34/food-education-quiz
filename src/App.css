@@ -1,14 +1,35 @@
 #root {
-  min-height: 100vh;
+  min-height: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2em;
-  margin: 0 auto;
+  min-width: -webkit-fill-available;
   text-align: center;
   background: linear-gradient(135deg, #e0f7fa, #ffffff);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   animation: fadeSlideIn 0.8s ease-out;
+  line-height: 1.5;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Quiz Container Styles */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 90%;
+  min-height: 100%;
+  padding: 2em;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .question-text {
@@ -48,15 +69,15 @@
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
   }
 }
 
 .card {
   padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
 
 .progress-container {
@@ -118,7 +139,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1em;
+  margin-top: 3em;
   width: 100%;
 }
 
@@ -127,19 +148,21 @@
   display: none; /* Initially hidden */
   background-color: red;
   color: white;
-  padding: 10px;
   text-align: center;
   border-radius: 5px;
   font-weight: bold;
   margin-bottom: 20px;
   transition: opacity 0.3s ease;
+  min-width: -webkit-fill-available;
 }
 
 /* When error is triggered, show the container */
 .error-container.show-error {
   display: block;
   opacity: 1;
-  animation: shake 0.5s ease; /* Optional: add a shake animation */
+  /* Adds a subtle shake effect to draw attention to the error container when it is shown. 
+     This animation is optional and can be removed if not needed. */
+  animation: shake 0.5s ease;
 }
 
 /* Optional: Shake animation */

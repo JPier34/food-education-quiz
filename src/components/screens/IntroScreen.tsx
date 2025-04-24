@@ -15,7 +15,7 @@ const IntroScreen: React.FC = () => {
   return (
     <div className="intro-screen">
       <div className="intro-content">
-        <h1>Quiz sulla Sostenibilità Alimentare</h1>
+        <h1>Quanto ne sai?</h1>
 
         <div className="intro-description">
           <p>
@@ -37,13 +37,15 @@ const IntroScreen: React.FC = () => {
             <li>Potrai condividere i tuoi risultati sui social media</li>
           </ul>
           <p>
-            Sei pronto a scoprire quanto sei informato sulle tematiche di
-            sostenibilità alimentare?
+            <strong>
+              Sei pronto a scoprire quanto sei informato sulle tematiche di
+              sostenibilità alimentare?
+            </strong>
           </p>
         </div>
 
         <button className="start-button" onClick={startQuiz}>
-          Inizia il Quiz
+          Inizia il Quiz!
         </button>
       </div>
     </div>
