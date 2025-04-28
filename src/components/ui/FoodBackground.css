@@ -25,17 +25,17 @@
 
 /* Immagine Forchetta (Cheese) */
 .cheese {
-  background-image: url("./src/assets/images/cheese.png");
+  background-image: url("/images/cheese.png");
 }
 
 /* Immagine Beverages (Drink) */
 .drink {
-  background-image: url("./src/assets/images/drink.png");
+  background-image: url("/images/drink.png");
 }
 
 /* Immagine Frutta */
 .fruit {
-  background-image: url("./src/assets/images/fruit.png");
+  background-image: url("/images/fruit.png");
 }
 
 /* Animazione di movimento continuo */
