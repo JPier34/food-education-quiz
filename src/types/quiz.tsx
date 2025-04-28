@@ -31,8 +31,8 @@ export type QuizAction =
   | { type: "COMPLETE_QUIZ" };
 
 export enum SkillLevel {
-  BEGINNER = "Base",
+  BEGINNER = "Principiante",
   INTERMEDIATE = "Intermedio",
-  EXPERT = "Esperto/a",
-  MASTER = "Maestro/a",
+  EXPERT = "Esperto/a!",
+  MASTER = "Maestro/a!",
 }

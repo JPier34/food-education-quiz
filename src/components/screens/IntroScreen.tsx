@@ -15,21 +15,24 @@ const IntroScreen: React.FC = () => {
   return (
     <div className="intro-screen">
       <div className="intro-content">
-        <h1>Quanto ne sai?</h1>
+        <h1 className="intro-title">🤔 Quanto ne sai?</h1>
 
         <div className="intro-description">
           <p>
-            Benvenuto al quiz sulla sostenibilità alimentare e l'impatto del
-            cibo sull'ambiente!
+            🌿 Benvenuto al quiz sulla{" "}
+            <strong> sostenibilità alimentare</strong> e l'impatto del cibo
+            sull'ambiente!
           </p>
           <p>
             Questo quiz ti permetterà di testare le tue conoscenze su come le
             nostre scelte alimentari quotidiane influenzano l'ambiente e la
             società.
           </p>
-          <p>Come funziona:</p>
+          <span>Come funziona:</span>👇
           <ul>
-            <li>Il quiz consiste in 10 domande a scelta multipla</li>
+            <li>
+              Il quiz consiste in <strong>10 domande</strong> a scelta multipla
+            </li>
             <li>
               Per ogni domanda, seleziona una delle quattro opzioni disponibili
             </li>
@@ -45,7 +48,7 @@ const IntroScreen: React.FC = () => {
         </div>
 
         <button className="start-button" onClick={startQuiz}>
-          Inizia il Quiz!
+          Inizia il Quiz! ▶️
         </button>
       </div>
     </div>

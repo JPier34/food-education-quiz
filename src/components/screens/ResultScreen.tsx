@@ -9,7 +9,6 @@ const ResultScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const totalQuestions = questions.length;
-  // const scorePercentage = (state.score / totalQuestions) * 100;
 
   const getSkillLevel = (): SkillLevel => {
     if (state.score === totalQuestions) return SkillLevel.MASTER;
@@ -23,13 +22,13 @@ const ResultScreen: React.FC = () => {
   const getMessage = (): string => {
     switch (skillLevel) {
       case SkillLevel.MASTER:
-        return "Complimenti! Sei un vero maestro della sostenibilità alimentare!";
+        return "🎉 Complimenti! Per te la sostenibilità alimentare non ha segreti! 🌱👑";
       case SkillLevel.EXPERT:
-        return "Ottimo! Hai una conoscenza approfondita dell'impatto ambientale del cibo.";
+        return "🚀 Ottimo! Hai un'ottima conoscenza dell'impatto ambientale del cibo! 🌍✨";
       case SkillLevel.INTERMEDIATE:
-        return "Buon lavoro! Hai una discreta conoscenza della tematica.";
+        return "👍 Buon lavoro, ma puoi ancora migliorare! 🍽️📚";
       case SkillLevel.BEGINNER:
-        return "C'è ancora da imparare, ma sei sulla strada giusta!";
+        return "🌱 C'è ancora da imparare, ma sei sulla strada giusta! 💪😊";
     }
   };
 
@@ -55,32 +54,35 @@ const ResultScreen: React.FC = () => {
   };
 
   return (
-    <div className="result-screen">
-      <div className="result-container">
-        <h1>Risultati del Quiz</h1>
+    <div className="result-container">
+      <h1>
+        <u>Risultati del Quiz!</u>
+      </h1>
 
-        <div className="score-container">
-          <div className="score-circle">
-            <span className="score-number">{state.score}</span>
-            <span className="score-total">/{totalQuestions}</span>
-          </div>
+      <div className="score-container">
+        <div className="score-circle">
+          <span className="score-number">{state.score}</span>
+          <span className="score-total">/{totalQuestions}</span>
         </div>
+      </div>
 
-        <div className="skill-level">
-          Il tuo livello: <span className="skill-value">{skillLevel}</span>
-        </div>
+      <div className="skill-level">
+        Il tuo livello:{" "}
+        <span className="skill-value">
+          <b>{skillLevel}</b>
+        </span>
+      </div>
 
-        <p className="result-message">{getMessage()}</p>
+      <p className="result-message">{getMessage()}</p>
 
-        <div className="action-buttons">
-          <button className="restart-button" onClick={restartQuiz}>
-            Riprova il Quiz
-          </button>
+      <div className="action-buttons">
+        <button className="restart-button" onClick={restartQuiz}>
+          Riprova il Quiz
+        </button>
 
-          <button className="share-button" onClick={shareResults}>
-            Condividi Risultati
-          </button>
-        </div>
+        <button className="share-button" onClick={shareResults}>
+          Condividi Risultati
+        </button>
       </div>
     </div>
   );
