@@ -28,22 +28,26 @@ const IntroScreen: React.FC = () => {
             nostre scelte alimentari quotidiane influenzano l'ambiente e la
             società.
           </p>
-          <span>Come funziona:</span>👇
+          <span>👇 Come funziona:</span>
           <ul>
-            <li>
+            <li className="question">
               Il quiz consiste in <strong>10 domande</strong> a scelta multipla
             </li>
-            <li>
-              Per ogni domanda, seleziona una delle quattro opzioni disponibili
+            <li className="option">
+              Per ogni domanda, seleziona una delle{" "}
+              <strong>quattro opzioni</strong> disponibili
             </li>
-            <li>Alla fine riceverai un punteggio e un livello di competenza</li>
-            <li>Potrai condividere i tuoi risultati sui social media</li>
+            <li className="score">
+              Alla fine riceverai un <strong>punteggio</strong> e un livello di
+              competenza
+            </li>
+            <li className="share">
+              Potrai <strong>condividere</strong> i tuoi risultati sui social
+              media
+            </li>
           </ul>
           <p>
-            <strong>
-              Sei pronto a scoprire quanto sei informato sulle tematiche di
-              sostenibilità alimentare?
-            </strong>
+            <strong className="intro-emphasis">...Cominciamo? </strong>
           </p>
         </div>
 
