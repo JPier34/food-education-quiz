@@ -1,0 +1,51 @@
+/* FoodBackground.css */
+.food-background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 170%;
+  height: 150%;
+  z-index: -1;
+  pointer-events: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centra gli elementi */
+  align-items: center; /* Centra gli elementi */
+  overflow: hidden;
+}
+
+.food-item {
+  width: 25%; /* Dimensioni per far sì che le immagini siano visibili correttamente */
+  height: 25%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation: scrollPattern 90s linear infinite; /* Animazione lenta */
+  margin-bottom: 25px; /* Rimuove il margine inferiore */
+}
+
+/* Immagine Forchetta (Cheese) */
+.cheese {
+  background-image: url("src/assets/images/cheese.png");
+}
+
+/* Immagine Beverages (Drink) */
+.drink {
+  background-image: url("src/assets/images/drink.png");
+}
+
+/* Immagine Frutta */
+.fruit {
+  background-image: url("src/assets/images/fruit.png");
+}
+
+/* Animazione di movimento continuo */
+@keyframes scrollPattern {
+  0% {
+    transform: translateX(0%); /* Partenza centrata */
+  }
+  100% {
+    transform: translateX(
+      -100%
+    ); /* Muove il pattern completamente verso la sinistra */
+  }
+}

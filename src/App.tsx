@@ -8,8 +8,9 @@ import {
 import IntroScreen from "./components/screens/IntroScreen";
 import ResultScreen from "./components/screens/ResultScreen";
 import { QuizContext, quizReducer, initialState } from "./context/QuizContext";
-import "./App.css";
+import FoodBackground from "./components/ui/FoodBackground";
 import QuizScreenWithParams from "./components/screens/QuizScreenWithParams";
+import "./App.css";
 
 // Wrapper per IntroScreen
 const IntroScreenWrapper: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
 
   return (
     <QuizContext.Provider value={{ state, dispatch }}>
+      <FoodBackground />
       <div className="app-container">
         <Router>
           <Routes>
