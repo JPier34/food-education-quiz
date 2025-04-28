@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../../context/QuizContext";
 import { SkillLevel } from "../../types/quiz";
 import { questions } from "../../data/questions";
+import "./ResultScreen.css";
 
 const ResultScreen: React.FC = () => {
   const { state, dispatch } = useContext(QuizContext);
