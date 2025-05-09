@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { QuizContext } from "../../context/QuizContext";
 import { SkillLevel } from "../../types/quiz";
 import { questions } from "../../data/questions";
@@ -8,17 +8,26 @@ import "./ResultScreen.css";
 const ResultScreen: React.FC = () => {
   const { state, dispatch } = useContext(QuizContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const totalQuestions = questions.length;
 
-  const getSkillLevel = (): SkillLevel => {
-    if (state.score === totalQuestions) return SkillLevel.MASTER;
-    if (state.score >= 8) return SkillLevel.EXPERT;
-    if (state.score >= 4) return SkillLevel.INTERMEDIATE;
+  // Lettura da URL se presenti
+  const params = new URLSearchParams(location.search);
+  const scoreFromUrl = params.get("score");
+  const levelFromUrl = params.get("level");
+
+  const score = scoreFromUrl ? parseInt(scoreFromUrl, 10) : state.score;
+
+  const getSkillLevel = (scoreVal: number): SkillLevel => {
+    if (scoreVal === totalQuestions) return SkillLevel.MASTER;
+    if (scoreVal >= 8) return SkillLevel.EXPERT;
+    if (scoreVal >= 4) return SkillLevel.INTERMEDIATE;
     return SkillLevel.BEGINNER;
   };
 
-  const skillLevel = getSkillLevel();
+  const skillLevel: SkillLevel =
+    (levelFromUrl as SkillLevel) || getSkillLevel(score);
 
   const getMessage = (): string => {
     switch (skillLevel) {
@@ -30,6 +39,8 @@ const ResultScreen: React.FC = () => {
         return "👍 Buon lavoro, ma puoi ancora migliorare! 🍽️📚";
       case SkillLevel.BEGINNER:
         return "🌱 C'è ancora da imparare, ma sei sulla strada giusta! 💪😊";
+      default:
+        return "";
     }
   };
 
@@ -39,18 +50,20 @@ const ResultScreen: React.FC = () => {
   };
 
   const shareResults = () => {
-    // Implementazione della condivisione sui social
-    const shareText = `Ho ottenuto ${state.score}/${totalQuestions} nel quiz sulla sostenibilità alimentare! Il mio livello è: ${skillLevel}. Prova anche tu!`;
+    const shareURL = `${window.location.origin}/results.html?score=${score}&level=${skillLevel}`;
+    const shareText = `Ho ottenuto ${score}/${totalQuestions} nel quiz sulla sostenibilità! Il mio livello è: ${skillLevel}. Prova anche tu!`;
 
     if (navigator.share) {
-      navigator.share({
-        title: "Il mio risultato nel Quiz sulla Sostenibilità Alimentare",
-        text: shareText,
-        url: window.location.href,
-      });
+      navigator
+        .share({
+          title: "Il mio risultato nel Quiz sulla Sostenibilità",
+          text: shareText,
+          url: shareURL,
+        })
+        .catch((err) => console.error("Errore nella condivisione:", err));
     } else {
-      // Fallback se Web Share API non è supportata
-      alert(`Condividi questo risultato:\n${shareText}`);
+      navigator.clipboard.writeText(shareURL);
+      alert("Link copiato negli appunti!");
     }
   };
 
@@ -62,7 +75,7 @@ const ResultScreen: React.FC = () => {
 
       <div className="score-container">
         <div className="score-circle">
-          <span className="score-number">{state.score}</span>
+          <span className="score-number">{score}</span>
           <span className="score-total">/{totalQuestions}</span>
         </div>
       </div>
