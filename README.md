@@ -2,7 +2,7 @@
 Welcome to your minimal yet powerful starter template for building React apps with TypeScript and Vite 🚀
 It comes pre-configured with Hot Module Replacement (HMR), ESLint, and strong linting rules for clean, scalable code.
 
-Here's the website: https://food-education-quiz.netlify.app/
+Here's the website: https://jpier34.github.io/food-education-quiz/
 
 🛠️ Tech Stack
 ⚛️ React – UI library

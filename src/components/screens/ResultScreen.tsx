@@ -39,19 +39,20 @@ const ResultScreen: React.FC = () => {
   };
 
   const shareResults = () => {
-    const shareText = `Ho ottenuto ${state.score}/${totalQuestions} nel quiz sulla sostenibilità alimentare! Il mio livello è: ${skillLevel}. Prova anche tu!`;
+    const resultText = `Ho realizzato ${state.score}/${totalQuestions} punti al Food Education Quiz! Il mio livello è: ${skillLevel}. E tu? Sai fare meglio? 💪🍽️`;
 
-    const resultUrl = `https://jpier34.github.io/food-education-quiz/results.html?score=${state.score}&level=${skillLevel}`;
+    const homepageUrl = "https://jpier34.github.io/food-education-quiz/";
 
     if (navigator.share) {
       navigator.share({
-        title: "Il mio risultato nel Quiz sulla Sostenibilità Alimentare",
-        text: shareText,
-        url: resultUrl,
+        title: "Sfida al Food Education Quiz 🌱",
+        text: resultText,
+        url: homepageUrl,
       });
     } else {
-      // Fallback se Web Share API non è supportata
-      alert(`Condividi questo risultato:\n${shareText}\n${resultUrl}`);
+      // Fallback per dispositivi che non supportano Web Share API
+      const fallbackMessage = `${resultText}\nFai anche tu il quiz: ${homepageUrl}`;
+      alert(fallbackMessage);
     }
   };
 
