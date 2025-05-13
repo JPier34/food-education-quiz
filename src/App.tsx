@@ -39,12 +39,8 @@ const App: React.FC = () => {
               path="/quiz/:questionId"
               element={<QuizScreenWithParams />}
             />
-            <Route
-              path="/results"
-              element={
-                state.quizCompleted ? <ResultScreen /> : <Navigate to="/" />
-              }
-            />
+            <Route path="/result/score/:score" element={<ResultScreen />} />
+            <Route path="/results" element={<Navigate to="/" />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>

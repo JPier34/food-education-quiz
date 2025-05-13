@@ -1,20 +1,23 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { QuizContext } from "../../context/QuizContext";
 import { SkillLevel } from "../../types/quiz";
 import { questions } from "../../data/questions";
+import { Helmet } from "react-helmet";
 import "./ResultScreen.css";
 
 const ResultScreen: React.FC = () => {
-  const { state, dispatch } = useContext(QuizContext);
+  const { dispatch } = useContext(QuizContext);
   const navigate = useNavigate();
+  const { score } = useParams(); // ⬅️ Prendi lo score dalla URL
 
   const totalQuestions = questions.length;
+  const numericScore = Math.min(parseInt(score || "0", 10), totalQuestions); // ⬅️ fallback e limite
 
   const getSkillLevel = (): SkillLevel => {
-    if (state.score === totalQuestions) return SkillLevel.MASTER;
-    if (state.score >= 8) return SkillLevel.EXPERT;
-    if (state.score >= 4) return SkillLevel.INTERMEDIATE;
+    if (numericScore === totalQuestions) return SkillLevel.MASTER;
+    if (numericScore >= 8) return SkillLevel.EXPERT;
+    if (numericScore >= 4) return SkillLevel.INTERMEDIATE;
     return SkillLevel.BEGINNER;
   };
 
@@ -39,82 +42,88 @@ const ResultScreen: React.FC = () => {
   };
 
   const shareResults = () => {
-    const resultText = `Ho realizzato ${state.score}/${totalQuestions} punti al Food Education Quiz! Il mio livello è: ${skillLevel}. E tu? Sai fare meglio? 💪🍽️`;
-
-    const homepageUrl = "https://jpier34.github.io/food-education-quiz/";
+    const resultText = `Ho realizzato ${numericScore}/${totalQuestions} punti al Food Education Quiz! Il mio livello è: ${skillLevel}.`;
+    const resultUrl = `https://jpier34.github.io/food-education-quiz/result/score/${numericScore}`;
 
     if (navigator.share) {
-      navigator
-        .share({
-          title: "Sfida al Food Education Quiz 🌱",
-          text: resultText,
-          url: homepageUrl,
-        })
-        .then(() => {
-          console.log("Risultati condivisi con successo!");
-        })
-        .catch((error) => {
-          console.error("Errore durante la condivisione:", error);
-        });
+      navigator.share({
+        title: "Sfida al Food Education Quiz 🌱",
+        text: resultText,
+        url: resultUrl,
+      });
     } else {
-      // Fallback per dispositivi che non supportano Web Share API (su desktop)
-
-      // Encode the result message to ensure proper URL format
-      const encodedResultText = encodeURIComponent(resultText);
-      const encodedUrl = encodeURIComponent(homepageUrl);
-
-      // WhatsApp link
-      const whatsappLink = `https://wa.me/?text=${encodedResultText}%20${encodedUrl}`;
-
-      // Facebook link
-      const facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-
-      // Twitter link
-      const twitterLink = `https://twitter.com/intent/tweet?text=${encodedResultText}&url=${encodedUrl}`;
-
-      // Mostra un link di condivisione
-      const fallbackMessage = `
-      Fai clic su uno dei link per condividere i tuoi risultati:\n
-      - [WhatsApp](${whatsappLink})\n
-      - [Facebook](${facebookLink})\n
-      - [Twitter](${twitterLink})`;
-
-      alert(fallbackMessage); // Mostra i link di condivisione alternativi se la Web Share API non è disponibile
+      const fallbackMessage = `${resultText}\nFai anche tu il quiz: ${resultUrl}`;
+      alert(fallbackMessage);
     }
   };
 
   return (
-    <div className="result-container">
-      <h1>
-        <u>Risultati del Quiz!</u>
-      </h1>
+    <>
+      <Helmet>
+        <meta
+          property="og:title"
+          content={`Risultati del Quiz - Livello: ${skillLevel}`}
+        />
+        <meta
+          property="og:description"
+          content={`Ho ottenuto ${numericScore}/${totalQuestions} punti al quiz!`}
+        />
+        <meta
+          property="og:image"
+          content="https://jpier34.github.io/food-education-quiz/src/assets/result-banner.png"
+        />
+        <meta
+          property="og:url"
+          content={`https://jpier34.github.io/food-education-quiz/result/score/${numericScore}`}
+        />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`Risultati del Quiz - Livello: ${skillLevel}`}
+        />
+        <meta
+          name="twitter:description"
+          content={`Ho ottenuto ${numericScore}/${totalQuestions} punti al quiz!`}
+        />
+        <meta
+          name="twitter:image"
+          content="https://jpier34.github.io/food-education-quiz/src/assets/result-banner.png"
+        />
+      </Helmet>
 
-      <div className="score-container">
-        <div className="score-circle">
-          <span className="score-number">{state.score}</span>
-          <span className="score-total">/{totalQuestions}</span>
+      <div className="result-container">
+        <h1>
+          <u>Risultati del Quiz!</u>
+        </h1>
+
+        <div className="score-container">
+          <div className="score-circle">
+            <span className="score-number">{numericScore}</span>
+            <span className="score-total">/{totalQuestions}</span>
+          </div>
+        </div>
+
+        <div className="skill-level">
+          Il tuo livello:{" "}
+          <span className="skill-value">
+            <b>{skillLevel}</b>
+          </span>
+        </div>
+
+        <p className="result-message">{getMessage()}</p>
+
+        <div className="action-buttons">
+          <button className="restart-button" onClick={restartQuiz}>
+            Riprova il Quiz
+          </button>
+
+          <button className="share-button" onClick={shareResults}>
+            Condividi Risultati
+          </button>
         </div>
       </div>
-
-      <div className="skill-level">
-        Il tuo livello:{" "}
-        <span className="skill-value">
-          <b>{skillLevel}</b>
-        </span>
-      </div>
-
-      <p className="result-message">{getMessage()}</p>
-
-      <div className="action-buttons">
-        <button className="restart-button" onClick={restartQuiz}>
-          Riprova il Quiz
-        </button>
-
-        <button className="share-button" onClick={shareResults}>
-          Condividi Risultati
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
