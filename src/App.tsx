@@ -1,10 +1,5 @@
 import React, { useReducer } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import IntroScreen from "./components/screens/IntroScreen";
 import ResultScreen from "./components/screens/ResultScreen";
 import { QuizContext, quizReducer, initialState } from "./context/QuizContext";
@@ -20,6 +15,10 @@ const IntroScreenWrapper: React.FC = () => {
     return <Navigate to={`/quiz/${state.currentQuestionIndex + 1}`} />;
   }
 
+  if (state.quizCompleted) {
+    return <Navigate to={`/result/score/${state.score}`} />;
+  }
+
   return <IntroScreen />;
 };
 
@@ -31,7 +30,7 @@ const App: React.FC = () => {
     <QuizContext.Provider value={{ state, dispatch }}>
       <FoodBackground />
       <div className="app-container">
-        <Router>
+        <HashRouter>
           <Routes>
             <Route path="/" element={<IntroScreenWrapper />} />
             <Route path="/quiz" element={<Navigate to="/quiz/1" />} />
@@ -39,15 +38,10 @@ const App: React.FC = () => {
               path="/quiz/:questionId"
               element={<QuizScreenWithParams />}
             />
-            <Route
-              path="/results"
-              element={
-                state.quizCompleted ? <ResultScreen /> : <Navigate to="/" />
-              }
-            />
+            <Route path="/result/score/:score" element={<ResultScreen />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </Router>
+        </HashRouter>
       </div>
     </QuizContext.Provider>
   );

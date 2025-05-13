@@ -1,20 +1,23 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { QuizContext } from "../../context/QuizContext";
 import { SkillLevel } from "../../types/quiz";
 import { questions } from "../../data/questions";
+import { Helmet } from "react-helmet";
 import "./ResultScreen.css";
 
 const ResultScreen: React.FC = () => {
-  const { state, dispatch } = useContext(QuizContext);
+  const { dispatch } = useContext(QuizContext);
   const navigate = useNavigate();
+  const { score } = useParams();
 
   const totalQuestions = questions.length;
+  const numericScore = Math.min(parseInt(score || "0", 10), totalQuestions);
 
   const getSkillLevel = (): SkillLevel => {
-    if (state.score === totalQuestions) return SkillLevel.MASTER;
-    if (state.score >= 8) return SkillLevel.EXPERT;
-    if (state.score >= 4) return SkillLevel.INTERMEDIATE;
+    if (numericScore === totalQuestions) return SkillLevel.MASTER;
+    if (numericScore >= 8) return SkillLevel.EXPERT;
+    if (numericScore >= 4) return SkillLevel.INTERMEDIATE;
     return SkillLevel.BEGINNER;
   };
 
@@ -39,53 +42,72 @@ const ResultScreen: React.FC = () => {
   };
 
   const shareResults = () => {
-    // Implementazione della condivisione sui social
-    const shareText = `Ho ottenuto ${state.score}/${totalQuestions} nel quiz sulla sostenibilità alimentare! Il mio livello è: ${skillLevel}. Prova anche tu!`;
+    const resultText = `Ho realizzato ${numericScore}/${totalQuestions} punti al Food Education Quiz! Il mio livello è: ${skillLevel}. Provaci tu!`;
+    const resultUrl = `https://jpier34.github.io/food-education-quiz/#/`;
 
+    // Check if the browser supports the Web Share API
     if (navigator.share) {
       navigator.share({
-        title: "Il mio risultato nel Quiz sulla Sostenibilità Alimentare",
-        text: shareText,
-        url: window.location.href,
+        title: "Sfida al Food Education Quiz 🌱",
+        text: resultText,
+        url: resultUrl,
       });
     } else {
-      // Fallback se Web Share API non è supportata
-      alert(`Condividi questo risultato:\n${shareText}`);
+      // Fallback for browsers that do not support the Web Share API
+      if (navigator.clipboard) {
+        // Copy to clipboard
+        navigator.clipboard
+          .writeText(`${resultText}\nFai anche tu il quiz: ${resultUrl}`)
+          .then(() => {
+            alert(
+              "Risultati copiati negli appunti! Puoi incollarli dove vuoi."
+            );
+          })
+          .catch((err) => {
+            alert("Impossibile copiare i risultati negli appunti.");
+          });
+      } else {
+        // Fallback to alert
+        const fallbackMessage = `${resultText}\nFai anche tu il quiz: ${resultUrl}`;
+        alert(fallbackMessage);
+      }
     }
   };
 
   return (
-    <div className="result-container">
-      <h1>
-        <u>Risultati del Quiz!</u>
-      </h1>
+    <>
+      <div className="result-container">
+        <h1>
+          <u>Risultati del Quiz!</u>
+        </h1>
 
-      <div className="score-container">
-        <div className="score-circle">
-          <span className="score-number">{state.score}</span>
-          <span className="score-total">/{totalQuestions}</span>
+        <div className="score-container">
+          <div className="score-circle">
+            <span className="score-number">{numericScore}</span>
+            <span className="score-total">/{totalQuestions}</span>
+          </div>
+        </div>
+
+        <div className="skill-level">
+          Il tuo livello:{" "}
+          <span className="skill-value">
+            <b>{skillLevel}</b>
+          </span>
+        </div>
+
+        <p className="result-message">{getMessage()}</p>
+
+        <div className="action-buttons">
+          <button className="restart-button" onClick={restartQuiz}>
+            Riprova il Quiz
+          </button>
+
+          <button className="share-button" onClick={shareResults}>
+            Condividi Risultati
+          </button>
         </div>
       </div>
-
-      <div className="skill-level">
-        Il tuo livello:{" "}
-        <span className="skill-value">
-          <b>{skillLevel}</b>
-        </span>
-      </div>
-
-      <p className="result-message">{getMessage()}</p>
-
-      <div className="action-buttons">
-        <button className="restart-button" onClick={restartQuiz}>
-          Riprova il Quiz
-        </button>
-
-        <button className="share-button" onClick={shareResults}>
-          Condividi Risultati
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
