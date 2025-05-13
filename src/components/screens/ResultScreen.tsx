@@ -9,10 +9,10 @@ import "./ResultScreen.css";
 const ResultScreen: React.FC = () => {
   const { dispatch } = useContext(QuizContext);
   const navigate = useNavigate();
-  const { score } = useParams(); // ⬅️ Prendi lo score dalla URL
+  const { score } = useParams();
 
   const totalQuestions = questions.length;
-  const numericScore = Math.min(parseInt(score || "0", 10), totalQuestions); // ⬅️ fallback e limite
+  const numericScore = Math.min(parseInt(score || "0", 10), totalQuestions);
 
   const getSkillLevel = (): SkillLevel => {
     if (numericScore === totalQuestions) return SkillLevel.MASTER;
@@ -42,9 +42,10 @@ const ResultScreen: React.FC = () => {
   };
 
   const shareResults = () => {
-    const resultText = `Ho realizzato ${numericScore}/${totalQuestions} punti al Food Education Quiz! Il mio livello è: ${skillLevel}.`;
-    const resultUrl = `https://jpier34.github.io/food-education-quiz/result/score/${numericScore}`;
+    const resultText = `Ho realizzato ${numericScore}/${totalQuestions} punti al Food Education Quiz! Il mio livello è: ${skillLevel}. Provaci tu!`;
+    const resultUrl = `https://jpier34.github.io/food-education-quiz/#/`;
 
+    // Check if the browser supports the Web Share API
     if (navigator.share) {
       navigator.share({
         title: "Sfida al Food Education Quiz 🌱",
@@ -52,46 +53,29 @@ const ResultScreen: React.FC = () => {
         url: resultUrl,
       });
     } else {
-      const fallbackMessage = `${resultText}\nFai anche tu il quiz: ${resultUrl}`;
-      alert(fallbackMessage);
+      // Fallback for browsers that do not support the Web Share API
+      if (navigator.clipboard) {
+        // Copy to clipboard
+        navigator.clipboard
+          .writeText(`${resultText}\nFai anche tu il quiz: ${resultUrl}`)
+          .then(() => {
+            alert(
+              "Risultati copiati negli appunti! Puoi incollarli dove vuoi."
+            );
+          })
+          .catch((err) => {
+            alert("Impossibile copiare i risultati negli appunti.");
+          });
+      } else {
+        // Fallback to alert
+        const fallbackMessage = `${resultText}\nFai anche tu il quiz: ${resultUrl}`;
+        alert(fallbackMessage);
+      }
     }
   };
 
   return (
     <>
-      <Helmet>
-        <meta
-          property="og:title"
-          content={`Risultati del Quiz - Livello: ${skillLevel}`}
-        />
-        <meta
-          property="og:description"
-          content={`Ho ottenuto ${numericScore}/${totalQuestions} punti al quiz!`}
-        />
-        <meta
-          property="og:image"
-          content="https://jpier34.github.io/food-education-quiz/src/assets/result-banner.png"
-        />
-        <meta
-          property="og:url"
-          content={`https://jpier34.github.io/food-education-quiz/result/score/${numericScore}`}
-        />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content={`Risultati del Quiz - Livello: ${skillLevel}`}
-        />
-        <meta
-          name="twitter:description"
-          content={`Ho ottenuto ${numericScore}/${totalQuestions} punti al quiz!`}
-        />
-        <meta
-          name="twitter:image"
-          content="https://jpier34.github.io/food-education-quiz/src/assets/result-banner.png"
-        />
-      </Helmet>
-
       <div className="result-container">
         <h1>
           <u>Risultati del Quiz!</u>

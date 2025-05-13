@@ -15,6 +15,10 @@ const IntroScreenWrapper: React.FC = () => {
     return <Navigate to={`/quiz/${state.currentQuestionIndex + 1}`} />;
   }
 
+  if (state.quizCompleted) {
+    return <Navigate to={`/result/score/${state.score}`} />;
+  }
+
   return <IntroScreen />;
 };
 
@@ -26,7 +30,7 @@ const App: React.FC = () => {
     <QuizContext.Provider value={{ state, dispatch }}>
       <FoodBackground />
       <div className="app-container">
-        <HashRouter basename="/food-education-quiz">
+        <HashRouter>
           <Routes>
             <Route path="/" element={<IntroScreenWrapper />} />
             <Route path="/quiz" element={<Navigate to="/quiz/1" />} />
