@@ -1,10 +1,5 @@
 import React, { useReducer } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import IntroScreen from "./components/screens/IntroScreen";
 import ResultScreen from "./components/screens/ResultScreen";
 import { QuizContext, quizReducer, initialState } from "./context/QuizContext";
@@ -31,7 +26,7 @@ const App: React.FC = () => {
     <QuizContext.Provider value={{ state, dispatch }}>
       <FoodBackground />
       <div className="app-container">
-        <Router>
+        <HashRouter basename="/food-education-quiz">
           <Routes>
             <Route path="/" element={<IntroScreenWrapper />} />
             <Route path="/quiz" element={<Navigate to="/quiz/1" />} />
@@ -40,10 +35,9 @@ const App: React.FC = () => {
               element={<QuizScreenWithParams />}
             />
             <Route path="/result/score/:score" element={<ResultScreen />} />
-            <Route path="/results" element={<Navigate to="/" />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </Router>
+        </HashRouter>
       </div>
     </QuizContext.Provider>
   );
