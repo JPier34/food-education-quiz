@@ -44,15 +44,42 @@ const ResultScreen: React.FC = () => {
     const homepageUrl = "https://jpier34.github.io/food-education-quiz/";
 
     if (navigator.share) {
-      navigator.share({
-        title: "Sfida al Food Education Quiz 🌱",
-        text: resultText,
-        url: homepageUrl,
-      });
+      navigator
+        .share({
+          title: "Sfida al Food Education Quiz 🌱",
+          text: resultText,
+          url: homepageUrl,
+        })
+        .then(() => {
+          console.log("Risultati condivisi con successo!");
+        })
+        .catch((error) => {
+          console.error("Errore durante la condivisione:", error);
+        });
     } else {
-      // Fallback per dispositivi che non supportano Web Share API
-      const fallbackMessage = `${resultText}\nFai anche tu il quiz: ${homepageUrl}`;
-      alert(fallbackMessage);
+      // Fallback per dispositivi che non supportano Web Share API (su desktop)
+
+      // Encode the result message to ensure proper URL format
+      const encodedResultText = encodeURIComponent(resultText);
+      const encodedUrl = encodeURIComponent(homepageUrl);
+
+      // WhatsApp link
+      const whatsappLink = `https://wa.me/?text=${encodedResultText}%20${encodedUrl}`;
+
+      // Facebook link
+      const facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+
+      // Twitter link
+      const twitterLink = `https://twitter.com/intent/tweet?text=${encodedResultText}&url=${encodedUrl}`;
+
+      // Mostra un link di condivisione
+      const fallbackMessage = `
+      Fai clic su uno dei link per condividere i tuoi risultati:\n
+      - [WhatsApp](${whatsappLink})\n
+      - [Facebook](${facebookLink})\n
+      - [Twitter](${twitterLink})`;
+
+      alert(fallbackMessage); // Mostra i link di condivisione alternativi se la Web Share API non è disponibile
     }
   };
 
