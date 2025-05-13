@@ -1,7 +1,9 @@
 {
-  "functions": {
-    "api/og.ts": {
-      "runtime": "edge"
+  "version": 2,
+  "builds": [
+    {
+      "src": "next.config.js",
+      "use": "@vercel/next"
     }
-  }
+  ]
 }
