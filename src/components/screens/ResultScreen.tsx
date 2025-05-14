@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { QuizContext } from "../../context/QuizContext";
 import { SkillLevel } from "../../types/quiz";
 import { questions } from "../../data/questions";
-import { Helmet } from "react-helmet";
 import "./ResultScreen.css";
 
 const ResultScreen: React.FC = () => {
